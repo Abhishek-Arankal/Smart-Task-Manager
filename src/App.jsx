@@ -12,12 +12,16 @@ function App() {
         alert("Enter task to add")
         return;
       }
-      setTodos([...todos, task])
+      setTodos([...todos, {id: Date.now(), task: task}])
       setTask("")
   }
   console.log("todos",todos)
   
+const handleDelete = (todo) => {
+  const updatedTodos = todos.filter((t) => t.id !== todo.id)
+  setTodos(updatedTodos)
 
+}
   return (
     <div className='w-full h-screen bg-gray-800 text-white'>
       <div className='p-6'>
@@ -29,7 +33,7 @@ function App() {
       <h1 className='text-2xl text-center mt-10 font-bold'>Tasks To DO</h1>
       <div className='mt-15 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2'>
        {todos.map((todo, idx) => (
-        <TaskCard todo={todo} key={idx}/>
+        <TaskCard todo={todo} key={todo.id} handleDelete={handleDelete}/>
        ))}
 
       </div>
