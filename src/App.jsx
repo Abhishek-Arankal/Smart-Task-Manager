@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useState } from 'react'
 import TaskCard from './components/TaskCard'
 
@@ -41,11 +41,14 @@ const handleEditSave = (todo, editedTask) => {
   
 }
 
-const filteredTasks = todos.filter((todo) => {
+const filteredTasks = useMemo(() => {
+  return todos.filter((todo) => {
   if(filter === "active") return todo.completed !== true
   if(filter === "completed") return todo.completed === true
   return true
 })
+}, [filter, todos])
+
   return (
     <div className='w-full h-screen bg-gray-800 text-white'>
       <div className='p-6'>
