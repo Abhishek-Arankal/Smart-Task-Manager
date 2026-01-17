@@ -6,6 +6,7 @@ import TaskCard from './components/TaskCard'
 function App() {
   const [todos, setTodos] = useState([])
   const [task, setTask] = useState("")
+  const [isEditingId, setIsEditingId] = useState(null)
 
   const handleSubmit = () => {
       if(task.trim() === ""){
@@ -26,6 +27,19 @@ const handleTaskCompleted = (todo) => {
   const updatedTodos = todos.map((t) => t.id === todo.id ? {...t, completed: !t.completed} : t)
   setTodos(updatedTodos)
 }
+
+const handleEditSave = (todo, editedTask) => {
+  const trimmedTask = editedTask.trim()
+  if(trimmedTask === "" || todo.task.toLowerCase() === trimmedTask.toLowerCase()){
+    setIsEditingId(null)
+    return
+  };
+
+  const updatedTodos = todos.map((t) => t.id === todo.id ? {...t, task: trimmedTask} : t)
+  setTodos(updatedTodos)
+  setIsEditingId(null)
+  
+}
   return (
     <div className='w-full h-screen bg-gray-800 text-white'>
       <div className='p-6'>
@@ -37,7 +51,7 @@ const handleTaskCompleted = (todo) => {
       <h1 className='text-2xl text-center mt-10 font-bold'>Tasks To DO</h1>
       <div className='mt-15 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2'>
        {todos.map((todo, idx) => (
-        <TaskCard todo={todo} key={todo.id} handleDelete={handleDelete} handleTaskCompleted={handleTaskCompleted}/>
+        <TaskCard todo={todo} key={todo.id} handleDelete={handleDelete} handleTaskCompleted={handleTaskCompleted} editingId={isEditingId} setEditingId={setIsEditingId} handleEditSave={handleEditSave}/>
        ))}
 
       </div>
